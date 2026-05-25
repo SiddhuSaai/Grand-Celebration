@@ -3,21 +3,18 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { MapPin, MessageCircle, Navigation, Phone, Send, X } from 'lucide-react';
 import { FormEvent, useEffect, useState } from 'react';
+import { clientProfile } from '@/lib/client';
 
 const contactDetails = [
-  { icon: Phone, label: '+91 99948 26482' },
-  { icon: Phone, label: '+91 86108 72204' },
-  { icon: MapPin, label: 'West, Attur, Near Bus Stand, Madha Kovil Street, Salem - 636102' }
+  { icon: Phone, label: clientProfile.phone, href: clientProfile.phoneHref },
+  { icon: MessageCircle, label: 'Message us on WhatsApp', href: clientProfile.whatsappUrl },
+  { icon: MapPin, label: clientProfile.address, href: clientProfile.mapUrl },
 ];
 
 const actionLinks = [
-  { icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/919994826482' },
-  { icon: Phone, label: 'Call', href: 'tel:+919994826482' },
-  {
-    icon: Navigation,
-    label: 'Map',
-    href: 'https://www.google.com/maps/search/?api=1&query=Annai%20Eventz%20Attur%20Madha%20Kovil%20Street%20Salem'
-  }
+  { icon: Phone, label: 'Call Us', href: clientProfile.phoneHref },
+  { icon: MessageCircle, label: 'Message Us', href: clientProfile.whatsappUrl },
+  { icon: Navigation, label: 'Map', href: clientProfile.mapUrl }
 ];
 
 const fieldLabels: Record<string, string> = {
@@ -30,15 +27,25 @@ const fieldLabels: Record<string, string> = {
   message: 'Message'
 };
 
-function buildWhatsAppLink(source: string, values: Record<string, string>) {
-  const lines = [
-    `New ${source} enquiry for Annai Eventz Attur`,
+function buildEnquiryText(source: string, values: Record<string, string>) {
+  return [
+    `New ${source} enquiry for ${clientProfile.name}`,
     ...Object.entries(values)
       .filter(([, value]) => value.trim().length > 0)
       .map(([key, value]) => `${fieldLabels[key] ?? key}: ${value}`)
-  ];
+  ].join('\n');
+}
 
-  return `https://wa.me/919994826482?text=${encodeURIComponent(lines.join('\n'))}`;
+function getFormValues(form: HTMLFormElement) {
+  const formData = new FormData(form);
+  return Object.fromEntries(
+    Array.from(formData.entries()).map(([key, value]) => [key, String(value)])
+  );
+}
+
+function buildWhatsAppLink(source: string, form: HTMLFormElement) {
+  const values = getFormValues(form);
+  return `${clientProfile.whatsappUrl}?text=${encodeURIComponent(buildEnquiryText(source, values))}`;
 }
 
 export default function ContactForm() {
@@ -52,11 +59,9 @@ export default function ContactForm() {
       setIsPopupOpen(true);
     };
 
-    const timer = window.setTimeout(openPopup, 3200);
     window.addEventListener('open-enquiry-popup', openPopup);
 
     return () => {
-      window.clearTimeout(timer);
       window.removeEventListener('open-enquiry-popup', openPopup);
     };
   }, []);
@@ -77,11 +82,7 @@ export default function ContactForm() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const formData = new FormData(form);
-    const values = Object.fromEntries(
-      Array.from(formData.entries()).map(([key, value]) => [key, String(value)])
-    );
-    window.open(buildWhatsAppLink('website contact form', values), '_blank', 'noopener,noreferrer');
+    window.open(buildWhatsAppLink('website contact form', form), '_blank', 'noopener,noreferrer');
     setIsSubmitted(true);
     form.reset();
   };
@@ -89,11 +90,7 @@ export default function ContactForm() {
   const handlePopupSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const formData = new FormData(form);
-    const values = Object.fromEntries(
-      Array.from(formData.entries()).map(([key, value]) => [key, String(value)])
-    );
-    window.open(buildWhatsAppLink('quick popup', values), '_blank', 'noopener,noreferrer');
+    window.open(buildWhatsAppLink('quick popup', form), '_blank', 'noopener,noreferrer');
     setIsPopupSubmitted(true);
     form.reset();
   };
@@ -103,7 +100,7 @@ export default function ContactForm() {
       <AnimatePresence>
         {isPopupOpen ? (
           <motion.div
-            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 px-4 py-6 text-white backdrop-blur-md"
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/75 px-4 py-6 text-white"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -113,7 +110,7 @@ export default function ContactForm() {
             aria-labelledby="popup-enquiry-title"
           >
             <motion.div
-              className="relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-sm border border-gold/30 bg-premium-dark p-4 shadow-2xl shadow-black/40 sm:p-7"
+              className="relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-sm border border-gold/30 bg-premium-dark p-4 shadow-xl shadow-black/35 sm:p-7"
               initial={{ opacity: 0, y: 28, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 18, scale: 0.97 }}
@@ -134,7 +131,7 @@ export default function ContactForm() {
                 Quick Enquiry
               </h2>
               <p className="mt-2 max-w-sm text-xs leading-5 text-white/65 sm:text-sm sm:leading-6">
-                Share your event details and Annai Eventz Attur will connect shortly.
+                Share your event details and send them directly to the team on WhatsApp.
               </p>
 
               <form onSubmit={handlePopupSubmit} className="mt-4 space-y-3">
@@ -171,11 +168,12 @@ export default function ContactForm() {
                     <option value="" disabled>
                       Select event
                     </option>
-                    <option>Wedding</option>
-                    <option>Corporate</option>
-                    <option>Birthday</option>
-                    <option>Anniversary</option>
-                    <option>Baby Shower</option>
+                    <option>Wedding Decor</option>
+                    <option>Balloon Decor</option>
+                    <option>Birthday Decoration</option>
+                    <option>Lighting Decoration</option>
+                    <option>Stage Decor</option>
+                    <option>Event Management</option>
                     <option>Other</option>
                   </select>
                 </label>
@@ -194,7 +192,7 @@ export default function ContactForm() {
                   type="submit"
                   className="flex w-full items-center justify-center gap-2 rounded-sm bg-gold-gradient px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-obsidian transition hover:bg-white sm:py-4"
                 >
-                  Send Enquiry
+                  Send WhatsApp Enquiry
                   <Send className="h-4 w-4" />
                 </button>
 
@@ -226,23 +224,29 @@ export default function ContactForm() {
         >
           <p className="text-xs font-bold uppercase tracking-[0.34em] text-gold">Contact</p>
           <h2 className="mt-3 font-serif text-3xl leading-tight sm:mt-4 sm:text-5xl">
-            Plan Your Function With Annai Eventz
+            Plan Your Function With {clientProfile.shortName}
           </h2>
           <p className="mt-4 max-w-lg text-sm leading-6 text-white/70 sm:mt-6 sm:text-base sm:leading-8">
-            Share the type of event, preferred date, and location. The team will help with planning,
-            decor, and coordination details.
+            Share the type of event, preferred date, and location. The team handles decor, lighting,
+            stage presentation, and event management details.
           </p>
 
           <div className="mt-6 space-y-3 sm:mt-10 sm:space-y-5">
             {contactDetails.map((detail) => {
               const Icon = detail.icon;
               return (
-                <div key={detail.label} className="flex items-center gap-4">
+                <a
+                  key={detail.label}
+                  href={detail.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-4 transition hover:text-gold"
+                >
                   <span className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 text-gold sm:h-12 sm:w-12">
                     <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                   </span>
                   <span className="text-sm leading-6 text-white/80 sm:text-base">{detail.label}</span>
-                </div>
+                </a>
               );
             })}
           </div>
@@ -269,7 +273,7 @@ export default function ContactForm() {
 
           <motion.form
             onSubmit={handleSubmit}
-            className="rounded-sm border border-white/10 bg-white/[0.04] p-4 shadow-2xl shadow-black/20 backdrop-blur sm:p-8"
+            className="rounded-sm border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-8"
             initial={{ opacity: 0, y: 26 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
@@ -316,11 +320,12 @@ export default function ContactForm() {
                 <option value="" disabled>
                   Select event
                 </option>
-                <option>Wedding</option>
-                <option>Corporate</option>
-                <option>Birthday</option>
-                <option>Anniversary</option>
-                <option>Baby Shower</option>
+                <option>Wedding Decor</option>
+                <option>Balloon Decor</option>
+                <option>Birthday Decoration</option>
+                <option>Lighting Decoration</option>
+                <option>Stage Decor</option>
+                <option>Event Management</option>
                 <option>Other</option>
               </select>
             </label>
@@ -364,7 +369,7 @@ export default function ContactForm() {
             type="submit"
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-sm bg-gold-gradient px-6 py-3 text-xs font-bold uppercase tracking-[0.16em] text-obsidian transition hover:bg-white sm:mt-6 sm:py-4 sm:text-sm"
           >
-            Send Enquiry
+            Send WhatsApp Enquiry
             <Send className="h-4 w-4" />
           </button>
 

@@ -2,41 +2,20 @@
 
 import { motion, useInView } from 'framer-motion';
 import { CalendarCheck, Globe2, HeartHandshake, Sparkles } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
+import { clientProfile } from '@/lib/client';
 
 const stats = [
-  { value: 4, suffix: '.5', label: 'Justdial Rating', icon: HeartHandshake },
-  { value: 100, suffix: '+ Reviews', label: 'Public Feedback', icon: Sparkles },
-  { value: 10, suffix: '+ Years', label: 'Years Service', icon: CalendarCheck },
-  { value: 1, suffix: '', label: 'Best Event Planners', icon: Globe2 }
+  { value: 4, suffix: '.6', label: 'Customer Rating', icon: HeartHandshake },
+  { value: 50, suffix: '+ Ratings', label: 'Public Feedback', icon: Sparkles },
+  { value: 12, suffix: '+ Years', label: 'Years Service', icon: CalendarCheck },
+  { value: 2014, suffix: '', label: 'Established', icon: Globe2 }
 ];
 
 function CountUp({ value, suffix, isActive }: { value: number; suffix: string; isActive: boolean }) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!isActive) return;
-
-    let frame = 0;
-    const totalFrames = 80;
-    const animate = () => {
-      frame += 1;
-      const progress = Math.min(frame / totalFrames, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(value * eased));
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    const frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
-  }, [isActive, value]);
-
   return (
     <span>
-      {count}
+      {isActive ? value : 0}
       {suffix}
     </span>
   );
@@ -63,7 +42,7 @@ export default function Stats() {
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">By The Numbers</p>
             <h2 className="mt-4 font-serif text-3xl leading-tight">Trust signals</h2>
             <p className="mt-4 text-sm leading-7 text-white/62">
-              Local proof points for clients comparing event planners in and around Attur.
+              Local proof points for clients comparing event decorators in and around {clientProfile.location}.
             </p>
           </div>
 
@@ -72,7 +51,7 @@ export default function Stats() {
             return (
               <div
                 key={stat.label}
-                className="group relative min-h-[136px] overflow-hidden border border-white/10 bg-white/[0.055] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.14)] backdrop-blur transition duration-300 hover:border-gold/50 hover:bg-white/[0.08] sm:p-5 lg:min-h-[190px] lg:p-6"
+                className="group relative min-h-[136px] overflow-hidden border border-white/10 bg-white/[0.055] p-4 shadow-[0_14px_34px_rgba(0,0,0,0.12)] transition duration-300 hover:border-gold/50 hover:bg-white/[0.08] sm:p-5 lg:min-h-[190px] lg:p-6"
               >
                 <div className="absolute -right-8 -top-8 h-20 w-20 rounded-full border border-gold/15" />
                 <div className="flex items-start justify-between gap-3">
@@ -84,8 +63,8 @@ export default function Stats() {
                   </span>
                 </div>
                 <p className="mt-4 font-serif text-3xl leading-none text-gold sm:text-5xl lg:mt-5 lg:text-5xl">
-                  {stat.label === 'Best Event Planners' ? (
-                    <span>Best</span>
+                  {stat.label === 'Established' ? (
+                    <span>{clientProfile.established}</span>
                   ) : (
                     <CountUp value={stat.value} suffix={stat.suffix} isActive={isInView} />
                   )}

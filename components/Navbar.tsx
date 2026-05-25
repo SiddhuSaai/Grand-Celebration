@@ -4,18 +4,24 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { clientProfile } from '@/lib/client';
 
 const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'Packages', href: '#packages' },
-  { label: 'Planner', href: '#planner' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Contact', href: '#contact' }
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Process', href: '/#process' },
+  { label: 'Packages', href: '/#packages' },
+  { label: 'Planner', href: '/#planner' },
+  { label: 'Gallery', href: '/#gallery' },
+  { label: 'Contact', href: '/#contact' }
 ];
 
-export default function Navbar() {
+type NavbarProps = {
+  solid?: boolean;
+};
+
+export default function Navbar({ solid = false }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
@@ -33,8 +39,8 @@ export default function Navbar() {
   return (
     <motion.header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        isScrolled || isOpen
-          ? 'border-b border-gold/15 bg-obsidian/95 shadow-2xl shadow-black/10 backdrop-blur-xl'
+        solid || isScrolled || isOpen
+          ? 'border-b border-gold/15 bg-obsidian/97 shadow-xl shadow-black/10'
           : 'bg-transparent'
       }`}
       initial={false}
@@ -42,8 +48,10 @@ export default function Navbar() {
       transition={{ duration: 0.7, ease: 'easeOut' }}
     >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
-        <Link href="#home" className="group flex items-center gap-3" onClick={closeMenu}>
-          <span className="font-serif text-2xl tracking-[0.06em] text-white">Annai Eventz</span>
+        <Link href="/" className="group flex items-center gap-3" onClick={closeMenu}>
+          <span className="font-serif text-2xl tracking-[0.06em] text-white">
+            {clientProfile.shortName}
+          </span>
           <span className="h-px w-10 bg-gold transition-all duration-300 group-hover:w-14" />
         </Link>
 
@@ -83,7 +91,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen ? (
           <motion.div
-            className="border-t border-gold/15 bg-obsidian/95 px-5 pb-6 pt-2 shadow-2xl shadow-black/20 backdrop-blur-xl lg:hidden"
+            className="border-t border-gold/15 bg-obsidian/97 px-5 pb-6 pt-2 shadow-2xl shadow-black/20 lg:hidden"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}

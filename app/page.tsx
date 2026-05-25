@@ -1,4 +1,3 @@
-import About from '@/components/About';
 import ContactForm from '@/components/ContactForm';
 import EventBrief from '@/components/EventBrief';
 import FAQ from '@/components/FAQ';
@@ -24,7 +23,6 @@ export default function Home() {
         <Packages />
         <Stats />
         <Gallery />
-        <About />
         <EventBrief />
         <Testimonials />
         <FAQ />

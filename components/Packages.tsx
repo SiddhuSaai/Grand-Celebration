@@ -4,51 +4,51 @@ import { motion } from 'framer-motion';
 import {
   ArrowRight,
   BadgeCheck,
-  Building2,
+  Cake,
   ChevronLeft,
   ChevronRight,
   Crown,
   Gem,
-  HeartHandshake
+  Lightbulb
 } from 'lucide-react';
 import { useState } from 'react';
 
 const packages = [
   {
-    title: 'Signature Wedding',
-    label: 'Full Wedding Experience',
-    description: 'A complete planning collection for engagement, muhurtham, reception, and family rituals.',
+    title: 'Wedding Decor',
+    label: 'Stage & Reception Styling',
+    description: 'A wedding decor collection for floral stages, backdrops, entry styling, and hall presentation.',
     icon: Crown,
     tone: 'text-gold',
     bestFor: 'Weddings, receptions, engagements',
-    includes: ['Stage and mandap direction', 'Floral and lighting plan', 'Vendor coordination', 'Event-day run sheet']
+    includes: ['Stage backdrop', 'Floral styling', 'Entry decor', 'Lighting direction']
   },
   {
-    title: 'Corporate Prestige',
-    label: 'Business Event Production',
-    description: 'A polished setup for conferences, launches, recognition events, and formal programs.',
-    icon: Building2,
+    title: 'Birthday Decor',
+    label: 'Starts at ₹2,000',
+    description: 'A cheerful setup for kids birthdays, milestone parties, cake-table styling, and themed backdrops.',
+    icon: Cake,
     tone: 'text-sage',
-    bestFor: 'Conferences, launches, award programs',
-    includes: ['Stage and seating layout', 'Speaker flow support', 'Branding touchpoints', 'Guest hospitality desk']
+    bestFor: 'Birthdays, private parties, kids events',
+    includes: ['Balloon styling', 'Foil banner', 'Cake table focus', 'Photo corner']
   },
   {
-    title: 'Family Luxe',
-    label: 'Private Celebration Plan',
-    description: 'A warm, detail-led package for birthdays, anniversaries, baby showers, and home functions.',
-    icon: HeartHandshake,
+    title: 'Lighting Decor',
+    label: 'Starts at ₹3,000',
+    description: 'A focused lighting package to improve stage ambience, photo moments, and venue mood.',
+    icon: Lightbulb,
     tone: 'text-wine',
-    bestFor: 'Birthdays, anniversaries, baby showers',
-    includes: ['Theme styling', 'Photo moments', 'Cake or ritual setup', 'Compact guest flow']
+    bestFor: 'Reception stages, evening functions, halls',
+    includes: ['Stage lighting', 'Backdrop glow', 'Ambient focus', 'Photo-friendly setup']
   },
   {
-    title: 'Decor Studio',
-    label: 'Stage & Venue Styling',
-    description: 'A focused decor production package for halls, stages, entries, backdrops, and floral styling.',
+    title: 'Event Management',
+    label: 'Starts at ₹5,000',
+    description: 'A coordination package for decor planning, vendor readiness, venue setup, and event-day flow.',
     icon: Gem,
     tone: 'text-gold',
-    bestFor: 'Venue decor, stage design, floral work',
-    includes: ['Backdrop design', 'Entry decor', 'Lighting direction', 'Seating arrangement']
+    bestFor: 'Social events, family functions, venue decor',
+    includes: ['Setup plan', 'Vendor coordination', 'Venue presentation', 'Event-day support']
   }
 ];
 
@@ -82,14 +82,14 @@ export default function Packages() {
           transition={{ duration: 0.65 }}
         >
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.34em] text-gold">Premium Collections</p>
+            <p className="text-xs font-bold uppercase tracking-[0.34em] text-gold">Service Collections</p>
             <h2 className="mt-4 max-w-2xl font-serif text-4xl leading-tight text-navy sm:text-5xl">
-              Choose the level of planning your celebration needs.
+              Choose the decor support your celebration needs.
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-7 text-charcoal/68 sm:text-base">
-            Start with a collection, then tailor decor, hospitality, production, and event-day
-            coordination around your venue, guest count, and budget.
+            Start with a listed service, then tailor the backdrop, lighting, balloons, floral work,
+            and event-day support around your venue and budget.
           </p>
         </motion.div>
 

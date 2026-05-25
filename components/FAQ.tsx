@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Minus, Plus } from 'lucide-react';
 import { useState } from 'react';
+import { clientProfile } from '@/lib/client';
 
 const faqs = [
   {
@@ -13,12 +14,12 @@ const faqs = [
   {
     question: 'Where are you located?',
     answer:
-      'Annai Eventz Attur is listed near Bus Stand, Madha Kovil Street, Atur Bazaar, Salem, Tamil Nadu 636102.'
+      `${clientProfile.name} is listed at ${clientProfile.address}.`
   },
   {
     question: 'What is your pricing structure?',
     answer:
-      'Pricing depends on event type, decor scale, venue, guest count, and required services. Share your event details for a suitable estimate.'
+      `Event decor packages start from ${clientProfile.startingPrice}. Final pricing depends on event type, decor scale, venue, guest count, and required services.`
   },
   {
     question: 'Can I customize the event packages?',
@@ -28,7 +29,7 @@ const faqs = [
   {
     question: 'What events do you manage?',
     answer:
-      'The team handles weddings, corporate and conference events, anniversary parties, baby shower planning, birthday events, and family celebrations.'
+      'The team handles wedding decor, balloon decoration, birthday decoration, lighting decoration, stage decor, venue styling, and event management.'
   },
   {
     question: 'How involved can we be in the planning process?',
@@ -69,7 +70,7 @@ export default function FAQ() {
           </h2>
           <p className="mt-4 hidden max-w-md leading-8 text-charcoal/70 sm:block sm:mt-6">
             Practical answers about booking, event types, pricing, customization, and contact
-            details for Annai Eventz Attur.
+            details for {clientProfile.name}.
           </p>
           <button
             type="button"

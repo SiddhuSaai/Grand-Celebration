@@ -4,94 +4,87 @@ import { AnimatePresence, motion, useInView } from 'framer-motion';
 import {
   ArrowRight,
   Award,
-  BriefcaseBusiness,
   Cake,
-  ChevronLeft,
-  ChevronRight,
   Gem,
   MapPin,
+  PartyPopper,
   Sparkles,
   X
 } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { clientImages, clientProfile } from '@/lib/client';
 
 const services = [
   {
-    title: 'Wedding Management',
-    description: 'Complete wedding planning with stage, decor, and guest flow.',
-    detail: 'Muhurtham setup, reception decor, vendor coordination',
+    title: 'Wedding & Reception Decor',
+    description: 'Floral backdrops, sofa stages, entry decor, and hall styling.',
+    detail: 'Stage decor, flower work, mandap styling, reception setup',
     overview:
-      'Annai Eventz Attur manages traditional wedding moments with decorated stages, seating plans, vendor support, and smooth day-of coordination.',
-    includes: ['Wedding stage decor', 'Reception setup', 'Vendor direction', 'Guest flow planning'],
+      'Grand Celebration Events And Decors creates wedding and reception spaces with floral stages, draping, seating focus, and photo-ready backdrops.',
+    includes: ['Wedding stage decor', 'Reception backdrop', 'Floral styling', 'Entry decor'],
     bestFor: 'Engagements, weddings, receptions, and family ceremonies',
-    image:
-      'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-lllpusjfps.jpg?w=1200&q=75',
+    image: clientImages.floralCircles,
     imagePosition: 'object-center',
     icon: Sparkles
   },
   {
-    title: 'Corporate & Conferences',
-    description: 'Professional event support for meetings and business programs.',
-    detail: 'Conferences, launches, team meets, formal gatherings',
+    title: 'Balloon Decoration',
+    description: 'Balloon arches, backdrop styling, and cheerful celebration decor.',
+    detail: 'Balloon arches, theme corners, foil banners, photo setups',
     overview:
-      'From seating and stage planning to speaker flow and guest hospitality, the team creates organized corporate events for local businesses and institutions.',
-    includes: ['Conference setup', 'Stage and seating plan', 'Speaker flow', 'Hospitality coordination'],
-    bestFor: 'Corporate meetings, conferences, launches, and award programs',
-    image:
-      'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-8gar7i0246.jpg?w=1200&q=75',
-    imagePosition: 'object-top',
-    icon: BriefcaseBusiness
+      'Balloon decoration is planned around the occasion with color themes, backdrop accents, cake-table focus, and photo-friendly guest moments.',
+    includes: ['Balloon arch decor', 'Theme backdrop', 'Cake table styling', 'Photo corner'],
+    bestFor: 'Birthdays, baby showers, naming ceremonies, and private parties',
+    image: clientImages.hallEntry,
+    imagePosition: 'object-center',
+    icon: PartyPopper
   },
   {
-    title: 'Birthday Celebrations',
-    description: 'Decor-led birthday events for families and kids.',
-    detail: 'Theme decor, cake table, balloons, entertainment flow',
+    title: 'Birthday Decoration',
+    description: 'Budget-friendly birthday setups with decor options from ₹2,000.',
+    detail: 'Starts at ₹2,000 onwards / session',
     overview:
-      'Birthday celebrations are planned with theme decor, photo-friendly setups, cake moments, guest seating, and a celebration flow that feels easy for hosts.',
-    includes: ['Theme direction', 'Cake table styling', 'Entertainment flow', 'Photo moments'],
+      'Birthday celebrations are styled with balloons, foil banners, themed backdrops, cake-table decor, and simple event support for families.',
+    includes: ['Theme direction', 'Balloon styling', 'Cake table decor', 'Photo moments'],
     bestFor: 'Kids birthdays, milestone birthdays, private parties, and family gatherings',
-    image:
-      'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-sg3ww7menc.jpg?w=1200&q=75',
-    imagePosition: 'object-top',
+    image: clientImages.pinkStage,
+    imagePosition: 'object-center',
     icon: Cake
   },
   {
-    title: 'Anniversary Parties',
-    description: 'Elegant anniversary planning with warm family-focused details.',
-    detail: 'Stage decor, floral styling, seating, guest hospitality',
+    title: 'Lighting Decoration',
+    description: 'Decor lighting and illumination to lift the stage and hall mood.',
+    detail: 'Starts at ₹3,000 onwards / session',
     overview:
-      'For anniversary events, Annai Eventz Attur creates polished stage settings, floral details, family seating, and a comfortable flow for guests.',
-    includes: ['Couple stage setup', 'Floral styling', 'Family seating', 'Guest hospitality'],
-    bestFor: 'Anniversary functions, family celebrations, and private milestone events',
-    image:
-      'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-1ksjgswx5m.jpg?w=1200&q=75',
+      'Lighting decor adds stage depth, improves venue ambience, and supports photo and video moments across wedding and celebration setups.',
+    includes: ['Stage lighting', 'Backdrop illumination', 'Warm ambience', 'Photo-friendly focus'],
+    bestFor: 'Reception stages, evening functions, parties, and hall decor',
+    image: clientImages.floralCircles,
     imagePosition: 'object-center',
     icon: MapPin
   },
   {
-    title: 'Baby Shower Planning',
-    description: 'Soft, joyful decor and coordination for family rituals.',
-    detail: 'Theme setup, seating, rituals, photo-friendly decor',
+    title: 'Event Management',
+    description: 'End-to-end coordination for decor, vendors, setup, and day flow.',
+    detail: 'Starts at ₹5,000 onwards / session',
     overview:
-      'Baby shower events are handled with gentle styling, family-friendly seating, ritual space, and a calm plan for the complete function.',
-    includes: ['Theme setup', 'Ritual space', 'Family seating', 'Photo corner'],
-    bestFor: 'Baby showers, naming ceremonies, and intimate family celebrations',
-    image:
-      'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-knisnja2a0.jpg?w=1200&q=75',
+      'The team supports event planning with decor coordination, vendor readiness, venue setup, schedule clarity, and last-minute handling.',
+    includes: ['Vendor coordination', 'Venue setup', 'Event-day support', 'Guest flow planning'],
+    bestFor: 'Weddings, birthdays, family functions, and social events',
+    image: clientImages.stageRing,
     imagePosition: 'object-center',
     icon: Award
   },
   {
-    title: 'Stage & Venue Decor',
-    description: 'Decor production for halls, stages, and celebration spaces.',
-    detail: 'Backdrop, lighting, floral work, seating arrangement',
+    title: 'Pandal & Venue Styling',
+    description: 'Decor production for halls, pandals, stages, and entries.',
+    detail: 'Backdrop, draping, floral work, seating arrangement',
     overview:
       'The team handles decorated backdrops, floral layers, lighting, seating arrangement, and overall venue presentation for different event scales.',
-    includes: ['Backdrop design', 'Lighting support', 'Floral decor', 'Seating arrangement'],
+    includes: ['Backdrop design', 'Draping support', 'Floral decor', 'Seating arrangement'],
     bestFor: 'Marriage halls, reception stages, formal programs, and social functions',
-    image:
-      'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-lllpusjfps-250.jpg?w=1200&q=75',
+    image: clientImages.purpleSofaStage,
     imagePosition: 'object-center',
     icon: Gem
   }
@@ -113,11 +106,18 @@ const cardVariants = {
 export default function Services() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
+  const resumeCarouselTimeoutRef = useRef<number | null>(null);
+  const scrollFrameRef = useRef<number | null>(null);
+  const activeIndexRef = useRef(0);
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
   const [selectedService, setSelectedService] = useState<(typeof services)[number] | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [isMobileCarousel, setIsMobileCarousel] = useState(false);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
 
   const getCardStep = useCallback(() => {
     const carousel = carouselRef.current;
@@ -159,24 +159,46 @@ export default function Services() {
     [getCardStep, getMaxCarouselIndex]
   );
 
-  const moveCarousel = useCallback(
-    (direction: 1 | -1) => {
-      scrollToIndex(activeIndex + direction);
-    },
-    [activeIndex, scrollToIndex]
-  );
-
   const handleCarouselScroll = useCallback(() => {
-    const carousel = carouselRef.current;
-    const step = getCardStep();
+    if (scrollFrameRef.current !== null) return;
 
-    if (!carousel || step <= 0) return;
+    scrollFrameRef.current = window.requestAnimationFrame(() => {
+      scrollFrameRef.current = null;
 
-    const maxIndex = getMaxCarouselIndex();
-    const nextIndex = Math.min(maxIndex, Math.max(0, Math.round(carousel.scrollLeft / step)));
+      const carousel = carouselRef.current;
+      const step = getCardStep();
 
-    setActiveIndex(nextIndex);
+      if (!carousel || step <= 0) return;
+
+      const maxIndex = getMaxCarouselIndex();
+      const nextIndex = Math.min(maxIndex, Math.max(0, Math.round(carousel.scrollLeft / step)));
+
+      if (nextIndex !== activeIndexRef.current) {
+        activeIndexRef.current = nextIndex;
+        setActiveIndex(nextIndex);
+      }
+    });
   }, [getCardStep, getMaxCarouselIndex]);
+
+  const pauseCarousel = useCallback(() => {
+    if (resumeCarouselTimeoutRef.current) {
+      window.clearTimeout(resumeCarouselTimeoutRef.current);
+      resumeCarouselTimeoutRef.current = null;
+    }
+
+    setIsCarouselPaused(true);
+  }, []);
+
+  const resumeCarouselAfterGesture = useCallback(() => {
+    if (resumeCarouselTimeoutRef.current) {
+      window.clearTimeout(resumeCarouselTimeoutRef.current);
+    }
+
+    resumeCarouselTimeoutRef.current = window.setTimeout(() => {
+      setIsCarouselPaused(false);
+      resumeCarouselTimeoutRef.current = null;
+    }, 1200);
+  }, []);
 
   useEffect(() => {
     if (!selectedService) return;
@@ -236,6 +258,18 @@ export default function Services() {
     return () => window.removeEventListener('resize', handleResize);
   }, [activeIndex, isMobileCarousel, scrollToIndex]);
 
+  useEffect(() => {
+    return () => {
+      if (resumeCarouselTimeoutRef.current) {
+        window.clearTimeout(resumeCarouselTimeoutRef.current);
+      }
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+        scrollFrameRef.current = null;
+      }
+    };
+  }, []);
+
   const openEnquiryPopup = () => {
     setSelectedService(null);
     window.dispatchEvent(new Event('open-enquiry-popup'));
@@ -253,22 +287,25 @@ export default function Services() {
         >
           <p className="text-xs font-bold uppercase tracking-[0.34em] text-gold">What We Do</p>
           <h2 className="mt-4 font-serif text-3xl leading-tight text-navy sm:text-5xl">
-            Events We Specialize In
+            Decoration Services We Specialize In
           </h2>
           <p className="mx-auto mt-5 hidden max-w-2xl text-sm leading-7 text-charcoal/70 sm:block sm:text-base">
-            A focused set of planning verticals, each handled with design direction, vendor
-            coordination, production planning, and on-site execution.
+            A focused set of decor and event services from balloon styling to wedding stages,
+            lighting, venue presentation, and on-site coordination.
           </p>
         </motion.div>
 
         <div
           ref={carouselRef}
           onScroll={handleCarouselScroll}
-          onMouseEnter={() => setIsCarouselPaused(true)}
-          onMouseLeave={() => setIsCarouselPaused(false)}
-          onFocus={() => setIsCarouselPaused(true)}
-          onBlur={() => setIsCarouselPaused(false)}
-          className="no-scrollbar -mx-5 mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 pb-5 sm:mx-0 sm:mt-10 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 lg:gap-6"
+          onMouseEnter={pauseCarousel}
+          onMouseLeave={resumeCarouselAfterGesture}
+          onFocus={pauseCarousel}
+          onBlur={resumeCarouselAfterGesture}
+          onTouchStart={pauseCarousel}
+          onTouchEnd={resumeCarouselAfterGesture}
+          onTouchCancel={resumeCarouselAfterGesture}
+          className="no-scrollbar -mx-5 mt-7 flex touch-pan-x snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth px-5 pb-5 sm:mx-0 sm:mt-10 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 lg:gap-6"
         >
           {services.map((service, index) => {
             const Icon = service.icon;
@@ -282,20 +319,20 @@ export default function Services() {
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
                 data-service-card
-                className="group w-[82vw] shrink-0 snap-start overflow-hidden rounded-sm border border-gold/18 bg-pearl/86 text-left shadow-[0_16px_48px_rgba(9,12,22,0.08)] backdrop-blur-xl transition duration-500 hover:-translate-y-1 hover:border-gold hover:bg-white hover:shadow-luxe focus:outline-none focus:ring-2 focus:ring-gold/50 sm:w-auto"
+                className="group w-[82vw] shrink-0 snap-start overflow-hidden rounded-sm border border-gold/18 bg-pearl text-left shadow-[0_14px_34px_rgba(9,12,22,0.07)] transition duration-300 hover:-translate-y-0.5 hover:border-gold hover:bg-white focus:outline-none focus:ring-2 focus:ring-gold/50 sm:w-auto"
                 aria-label={`View details for ${service.title}`}
               >
                 <div className="relative h-36 overflow-hidden bg-navy sm:h-40">
                   <Image
                     src={service.image}
-                    alt={`${service.title} by Annai Eventz Attur`}
+                    alt={`${service.title} by ${clientProfile.name}`}
                     fill
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 82vw"
                     className={`object-cover ${service.imagePosition} transition duration-700 group-hover:scale-[1.03]`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-navy/42 via-navy/8 to-white/10 transition duration-500 group-hover:from-navy/30" />
                   <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/20" />
-                  <div className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-full border border-champagne/30 bg-obsidian/55 text-gold shadow-lg shadow-black/15 backdrop-blur-xl">
+                  <div className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-full border border-champagne/30 bg-obsidian/70 text-gold shadow-lg shadow-black/15">
                     <Icon className="h-5 w-5" />
                   </div>
                 </div>
@@ -317,31 +354,12 @@ export default function Services() {
             );
           })}
         </div>
-
-        <div className="mt-3 flex items-center justify-center gap-3 sm:hidden">
-          <button
-            type="button"
-            onClick={() => moveCarousel(-1)}
-            className="grid h-11 w-11 place-items-center rounded-full border border-gold/40 bg-pearl/80 text-navy shadow-[0_12px_34px_rgba(9,12,22,0.08)] transition hover:-translate-y-0.5 hover:border-gold hover:bg-gold hover:text-obsidian focus:outline-none focus:ring-2 focus:ring-gold/50"
-            aria-label="Previous service"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => moveCarousel(1)}
-            className="grid h-11 w-11 place-items-center rounded-full border border-gold/40 bg-obsidian text-gold shadow-[0_12px_34px_rgba(9,12,22,0.12)] transition hover:-translate-y-0.5 hover:bg-gold hover:text-obsidian focus:outline-none focus:ring-2 focus:ring-gold/50"
-            aria-label="Next service"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </div>
       </div>
 
       <AnimatePresence>
         {selectedService ? (
           <motion.div
-            className="fixed inset-0 z-[75] flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-md"
+            className="fixed inset-0 z-[75] flex items-center justify-center bg-black/75 px-4 py-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -361,7 +379,7 @@ export default function Services() {
               <button
                 type="button"
                 onClick={() => setSelectedService(null)}
-                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-navy/60 text-white backdrop-blur transition hover:border-gold hover:text-gold md:border-navy/15 md:bg-white/80 md:text-navy"
+                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-navy/70 text-white transition hover:border-gold hover:text-gold md:border-navy/15 md:bg-white/90 md:text-navy"
                 aria-label="Close service details"
               >
                 <X className="h-5 w-5" />
@@ -376,7 +394,7 @@ export default function Services() {
                   className={`object-cover ${selectedService.imagePosition}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent" />
-                <div className="absolute bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-full border border-gold/60 bg-navy/70 text-gold backdrop-blur">
+                <div className="absolute bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-full border border-gold/60 bg-navy/80 text-gold">
                   {(() => {
                     const ActiveIcon = selectedService.icon;
                     return <ActiveIcon className="h-6 w-6" />;

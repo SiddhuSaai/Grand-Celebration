@@ -1,20 +1,12 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { clientImages, clientProfile } from '@/lib/client';
 
-type GalleryCategory = 'Weddings' | 'Corporate' | 'Birthdays' | 'Galas';
-
-const annaiImages = {
-  stage: 'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-lllpusjfps.jpg?w=1200&q=75',
-  corporate: 'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-8gar7i0246.jpg?w=1200&q=75',
-  celebration: 'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-sg3ww7menc.jpg?w=1200&q=75',
-  decor: 'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-1ksjgswx5m.jpg?w=1200&q=75',
-  hall: 'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-knisnja2a0.jpg?w=1200&q=75',
-  venue: 'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-lllpusjfps-250.jpg?w=1200&q=75'
-};
+type GalleryCategory = 'Weddings' | 'Balloon Decor' | 'Birthdays' | 'Lighting';
 
 const galleryCollections: Record<
   GalleryCategory,
@@ -28,73 +20,73 @@ const galleryCollections: Record<
 > = {
   Weddings: {
     title: 'Wedding Setups',
-    description: 'Sample wedding stage and reception decor from Annai Eventz Attur.',
-    cover: annaiImages.stage,
+    description: `Wedding stage and reception decor samples from ${clientProfile.shortName}.`,
+    cover: clientImages.floralCircles,
     coverPosition: 'object-center',
     images: [
       {
-        src: annaiImages.stage,
-        alt: 'Decorated wedding stage by Annai Eventz Attur',
-        height: 760
+        src: clientImages.floralCircles,
+        alt: `Decorated wedding stage by ${clientProfile.name}`,
+        height: 900
       },
       {
-        src: annaiImages.decor,
+        src: clientImages.stageRing,
         alt: 'Floral event decor and stage arrangement',
-        height: 996
+        height: 420
       }
     ]
   },
-  Corporate: {
-    title: 'Corporate & Conferences',
-    description: 'Conference, formal program, and corporate event samples.',
-    cover: annaiImages.corporate,
-    coverPosition: 'object-[58%_18%]',
+  'Balloon Decor': {
+    title: 'Balloon Decor',
+    description: 'Balloon and themed backdrop samples for family celebrations.',
+    cover: clientImages.hallEntry,
+    coverPosition: 'object-center',
     images: [
       {
-        src: annaiImages.corporate,
-        alt: 'Formal event program by Annai Eventz Attur',
-        height: 650
+        src: clientImages.hallEntry,
+        alt: 'Balloon and sofa stage decor sample',
+        height: 760
       },
       {
-        src: annaiImages.hall,
-        alt: 'Indoor hall event setup sample',
-        height: 540
+        src: clientImages.pinkStage,
+        alt: 'Bright celebration backdrop and stage decor',
+        height: 430
       }
     ]
   },
   Birthdays: {
-    title: 'Family Celebrations',
-    description: 'Birthday, anniversary, and baby shower sample arrangements.',
-    cover: annaiImages.celebration,
-    coverPosition: 'object-[45%_16%]',
+    title: 'Birthday Decoration',
+    description: 'Birthday, anniversary, and family celebration decor samples.',
+    cover: clientImages.pinkStage,
+    coverPosition: 'object-center',
     images: [
       {
-        src: annaiImages.celebration,
+        src: clientImages.pinkStage,
         alt: 'Family celebration event setup',
-        height: 620
+        height: 430
       },
       {
-        src: annaiImages.venue,
+        src: clientImages.hallEntry,
         alt: 'Venue decor sample for family function',
-        height: 610
+        height: 760
       }
     ]
   },
-  Galas: {
-    title: 'Stage & Venue Decor',
-    description: 'Backdrop, floral, lighting, and hall decoration samples.',
-    cover: annaiImages.decor,
-    coverPosition: 'object-[46%_18%]',
+  Lighting: {
+    title: 'Lighting & Venue Decor',
+    description: 'Backdrop, lighting, hall entry, and venue decoration samples.',
+    cover: clientImages.hallEntry,
+    coverPosition: 'object-[45%_center]',
     images: [
       {
-        src: annaiImages.decor,
-        alt: 'Premium stage decor sample',
-        height: 650
+        src: clientImages.hallEntry,
+        alt: 'Decorated hall entry with lighting and floral styling',
+        height: 820
       },
       {
-        src: annaiImages.stage,
+        src: clientImages.stageRing,
         alt: 'Decorated hall backdrop sample',
-        height: 720
+        height: 420
       }
     ]
   }
@@ -103,6 +95,8 @@ const galleryCollections: Record<
 const categoryKeys = Object.keys(galleryCollections) as GalleryCategory[];
 
 export default function Gallery() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isInView = useInView(sectionRef, { amount: 0.12 });
   const [activeCategory, setActiveCategory] = useState<GalleryCategory | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [collectionIndex, setCollectionIndex] = useState(0);
@@ -119,14 +113,14 @@ export default function Gallery() {
   }, [activeCategory]);
 
   useEffect(() => {
-    if (activeCategory || isCarouselPaused) return;
+    if (!isInView || activeCategory || isCarouselPaused) return;
 
     const timer = window.setInterval(() => {
       setCollectionIndex((index) => (index + 1) % categoryKeys.length);
     }, 3800);
 
     return () => window.clearInterval(timer);
-  }, [activeCategory, isCarouselPaused]);
+  }, [activeCategory, isCarouselPaused, isInView]);
 
   useEffect(() => {
     if (lightboxIndex === null || visibleItems.length === 0) return;
@@ -169,6 +163,7 @@ export default function Gallery() {
 
   return (
     <section
+      ref={sectionRef}
       id="gallery"
       className="relative scroll-mt-20 overflow-hidden bg-pearl px-5 pb-2 pt-20 sm:px-8 sm:pb-6 lg:px-10 lg:pb-8 lg:pt-28"
     >
@@ -184,12 +179,12 @@ export default function Gallery() {
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.34em] text-gold">Selected Moments</p>
             <h2 className="mt-4 font-serif text-4xl leading-tight text-navy sm:text-5xl">
-              {activeCollection ? activeCollection.title : 'Annai Portfolio'}
+              {activeCollection ? activeCollection.title : 'Grand Celebration Portfolio'}
             </h2>
             <p className="mt-4 max-w-xl leading-7 text-charcoal/70">
               {activeCollection
                 ? activeCollection.description
-                : 'A sample gallery from Annai Eventz Attur, arranged by event type and decor style.'}
+                : `A sample gallery from ${clientProfile.name}, arranged by event type and decor style.`}
             </p>
           </div>
 
@@ -324,17 +319,15 @@ export default function Gallery() {
 
               <motion.div
                 className="mt-8 columns-1 gap-5 md:columns-2 lg:columns-3"
-                layout
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
               >
-                <AnimatePresence mode="popLayout">
+                <AnimatePresence>
                   {visibleItems.map((item, index) => (
                     <motion.button
                       key={item.src}
                       type="button"
-                      layout
                       initial={{ opacity: 0, y: 22 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.96 }}
@@ -372,7 +365,7 @@ export default function Gallery() {
       <AnimatePresence>
         {selectedItem ? (
           <motion.div
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-black/90 px-5 py-8 backdrop-blur-md"
+            className="fixed inset-0 z-[70] flex items-center justify-center bg-black/92 px-5 py-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

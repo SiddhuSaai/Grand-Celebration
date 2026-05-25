@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
+import { clientProfile } from '@/lib/client';
 import './globals.css';
 
 const playfair = Playfair_Display({
@@ -15,29 +16,21 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Annai Eventz Attur | Event Management Company in Salem',
+  title: 'Grand Celebration Events And Decors | Event Decorators in Coimbatore',
   description:
-    'Premium event planning, decor, stage production, and coordination for weddings, corporate events, anniversaries, baby showers, and celebrations in Attur, Salem.',
+    'Event decoration, balloon decor, wedding stage styling, birthday decoration, lighting, and event management in Peelamedu, Coimbatore.',
   keywords: [
-    'event management company Attur',
-    'wedding planner Salem',
-    'stage decoration Attur',
-    'corporate event planner Salem',
-    'birthday decoration Attur',
-    'Annai Eventz Attur'
+    'event decorators Coimbatore',
+    'balloon decorators Peelamedu',
+    'wedding decorators Coimbatore',
+    'birthday decoration Coimbatore',
+    'stage decorators Peelamedu',
+    'Grand Celebration Events And Decors'
   ],
   openGraph: {
-    title: 'Annai Eventz Attur | Event Management Company',
+    title: 'Grand Celebration Events And Decors | Event Decorators',
     description:
-      'Event planning and management for weddings, corporate functions, anniversaries, baby showers, and private celebrations in Attur, Salem.',
-    images: [
-      {
-        url: 'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-lllpusjfps.jpg?w=1200&q=75',
-        width: 1200,
-        height: 800,
-        alt: 'Event stage setup by Annai Eventz Attur'
-      }
-    ],
+      'Balloon decoration, wedding decor, birthday decor, lighting, stage styling, and event management in Peelamedu, Coimbatore.',
     type: 'website'
   }
 };
@@ -45,29 +38,27 @@ export const metadata: Metadata = {
 const localBusinessJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  name: 'Annai Eventz Attur',
+  name: clientProfile.name,
   description:
-    'Event planning, decor, stage production, and coordination for weddings, corporate functions, birthdays, anniversaries, baby showers, and family celebrations.',
-  telephone: ['+91 99948 26482', '+91 86108 72204'],
-  image:
-    'https://content.jdmagicbox.com/v2/comp/salem/a7/0427px427.x427.240730171835.i8a7/catalogue/annai-eventz-attur-salem-event-management-companies-lllpusjfps.jpg?w=1200&q=75',
+    'Event decoration, balloon decor, stage production, lighting, and event management for weddings, birthdays, corporate functions, and family celebrations.',
+  telephone: clientProfile.phone,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Near Bus Stand, Madha Kovil Street, Attur',
-    addressLocality: 'Salem',
+    streetAddress: 'M I G 3676, J R ILLAM, Near PENGUIN Hotel, Gandhima Nagar, Peelamedu',
+    addressLocality: 'Coimbatore',
     addressRegion: 'Tamil Nadu',
-    postalCode: '636102',
+    postalCode: '641004',
     addressCountry: 'IN'
   },
-  areaServed: ['Attur', 'Salem', 'Tamil Nadu'],
+  areaServed: ['Peelamedu', 'Coimbatore', 'Tamil Nadu'],
   serviceType: [
-    'Wedding management',
-    'Corporate event planning',
-    'Stage and venue decor',
-    'Birthday celebration planning',
-    'Baby shower planning'
+    'Balloon decoration',
+    'Wedding decoration',
+    'Birthday decoration',
+    'Lighting decoration',
+    'Stage and venue decor'
   ],
-  priceRange: 'Custom quote'
+  priceRange: `${clientProfile.startingPrice} onwards`
 };
 
 export default function RootLayout({

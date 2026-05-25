@@ -1,17 +1,19 @@
 import Link from 'next/link';
 import { ArrowUpRight, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { clientProfile } from '@/lib/client';
 
 const quickLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'Packages', href: '#packages' },
-  { label: 'Planner', href: '#planner' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Contact', href: '#contact' }
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Process', href: '/#process' },
+  { label: 'Packages', href: '/#packages' },
+  { label: 'Planner', href: '/#planner' },
+  { label: 'Gallery', href: '/#gallery' },
+  { label: 'Contact', href: '/#contact' }
 ];
 
-const services = ['Wedding Management', 'Corporate Events', 'Anniversary Parties', 'Baby Shower Planning'];
+const services = ['Wedding Decor', 'Balloon Decor', 'Birthday Decoration', 'Lighting Decoration'];
 
 export default function Footer() {
   return (
@@ -21,13 +23,13 @@ export default function Footer() {
           <div className="max-w-md">
             <div className="flex items-center gap-3">
               <span className="font-serif text-[1.7rem] tracking-[0.04em] sm:text-3xl">
-                Annai Eventz
+                {clientProfile.shortName}
               </span>
               <span className="h-px w-9 bg-gold sm:w-12" />
             </div>
             <p className="mt-3 text-sm leading-6 text-white/58 sm:mt-4 sm:text-base sm:leading-7">
-              Event planning, decor, and coordination for weddings, corporate moments, birthdays,
-              and family celebrations in Attur.
+              Balloon decor, wedding stages, birthday decoration, lighting, and event management
+              for celebrations in {clientProfile.location}.
             </p>
           </div>
 
@@ -51,7 +53,7 @@ export default function Footer() {
               </h3>
               <div className="mt-3 grid gap-2.5 text-sm sm:mt-4 sm:gap-3 sm:text-base">
                 {services.map((service) => (
-                  <Link key={service} href="#services" className="text-white/62 transition hover:text-gold">
+                  <Link key={service} href="/#services" className="text-white/62 transition hover:text-gold">
                     {service}
                   </Link>
                 ))}
@@ -65,25 +67,16 @@ export default function Footer() {
             </h3>
             <div className="space-y-3 text-sm text-white/62 sm:text-base">
               <a
-                href="tel:+919994826482"
+                href={clientProfile.phoneHref}
                 className="flex items-center gap-3 transition hover:text-gold"
               >
                 <span className="grid size-8 shrink-0 place-items-center rounded-full border border-gold/35 text-gold">
                   <Phone size={15} />
                 </span>
-                +91 99948 26482
+                {clientProfile.phone}
               </a>
               <a
-                href="tel:+918610872204"
-                className="flex items-center gap-3 transition hover:text-gold"
-              >
-                <span className="grid size-8 shrink-0 place-items-center rounded-full border border-gold/35 text-gold">
-                  <Phone size={15} />
-                </span>
-                +91 86108 72204
-              </a>
-              <a
-                href="https://wa.me/919994826482"
+                href={clientProfile.whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-3 transition hover:text-gold"
@@ -91,26 +84,35 @@ export default function Footer() {
                 <span className="grid size-8 shrink-0 place-items-center rounded-full border border-gold/35 text-gold">
                   <MessageCircle size={15} />
                 </span>
-                WhatsApp enquiry
+                WhatsApp message
+              </a>
+              <a
+                href="/#contact"
+                className="flex items-center gap-3 transition hover:text-gold"
+              >
+                <span className="grid size-8 shrink-0 place-items-center rounded-full border border-gold/35 text-gold">
+                  <ArrowUpRight size={15} />
+                </span>
+                Contact form
               </a>
               <p className="flex items-start gap-3 leading-6">
                 <span className="grid size-8 shrink-0 place-items-center rounded-full border border-gold/35 text-gold">
                   <MapPin size={15} />
                 </span>
-                <span>Near Bus Stand, Madha Kovil Street, Attur, Salem - 636102</span>
+                <span>{clientProfile.shortAddress}</span>
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <Link
-                href="#contact"
+                href="/#contact"
                 className="inline-flex items-center gap-2 rounded-full bg-gold-gradient px-5 py-3 text-xs font-bold uppercase tracking-[0.14em] text-obsidian transition hover:bg-white"
               >
                 Enquire
                 <ArrowUpRight size={15} />
               </Link>
               <Link
-                href="#home"
+                href="/"
                 className="text-xs font-bold uppercase tracking-[0.18em] text-white/45 transition hover:text-gold"
               >
                 Back to top
@@ -120,14 +122,14 @@ export default function Footer() {
         </div>
 
         <div className="mt-5 flex flex-col justify-between gap-3 text-xs text-white/45 sm:mt-6 sm:flex-row sm:items-center sm:text-sm">
-          <p>Copyright 2026 Annai Eventz Attur.</p>
+          <p>Copyright 2026 {clientProfile.name}.</p>
           <div className="flex gap-3">
-            <a href="https://wa.me/919994826482" target="_blank" rel="noreferrer" className="transition hover:text-gold">
+            <a href={clientProfile.whatsappUrl} target="_blank" rel="noreferrer" className="transition hover:text-gold">
               WhatsApp
             </a>
             <span className="text-white/25">|</span>
             <a
-              href="https://www.google.com/maps/search/?api=1&query=Annai%20Eventz%20Attur%20Madha%20Kovil%20Street%20Salem"
+              href={clientProfile.mapUrl}
               target="_blank"
               rel="noreferrer"
               className="transition hover:text-gold"

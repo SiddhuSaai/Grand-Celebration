@@ -99,7 +99,7 @@ export default function Process() {
         </motion.div>
 
         <div className="sm:hidden">
-          <div className="relative h-[260px] overflow-hidden border border-white/10 bg-white/[0.055] shadow-premium backdrop-blur">
+          <div className="relative h-[260px] overflow-hidden border border-white/10 bg-white/[0.055] shadow-premium">
             <AnimatePresence mode="wait">
               <motion.article
                 key={activeStep.title}
@@ -154,7 +154,7 @@ export default function Process() {
             return (
               <motion.article
                 key={step.title}
-                className="relative min-h-[230px] overflow-hidden border border-white/10 bg-white/[0.055] p-6 shadow-premium backdrop-blur"
+                className="relative min-h-[230px] overflow-hidden border border-white/10 bg-white/[0.055] p-6 shadow-premium"
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.18 }}

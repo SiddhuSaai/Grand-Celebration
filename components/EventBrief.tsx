@@ -3,29 +3,30 @@
 import { motion } from 'framer-motion';
 import { CalendarDays, Check, MessageCircle, SlidersHorizontal, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { clientProfile } from '@/lib/client';
 
-const eventTypes = ['Wedding', 'Corporate', 'Birthday', 'Anniversary', 'Baby Shower', 'Venue Decor'] as const;
+const eventTypes = ['Wedding Decor', 'Balloon Decor', 'Birthday Decor', 'Lighting Decor', 'Stage Decor', 'Venue Decor'] as const;
 const styleMoods = ['Royal', 'Floral', 'Minimal', 'Traditional', 'Modern'] as const;
 const priorities = [
   'Stage decor',
-  'Guest flow',
+  'Balloon styling',
   'Photography moments',
-  'Food coordination',
   'Sound & lighting',
-  'Ritual setup'
+  'Venue entry',
+  'Floral backdrop'
 ];
 
 const timelines: Record<(typeof eventTypes)[number], string> = {
-  Wedding: '45-90 days before the event',
-  Corporate: '20-45 days before the program',
-  Birthday: '10-25 days before the celebration',
-  Anniversary: '15-30 days before the function',
-  'Baby Shower': '15-30 days before the ritual',
+  'Wedding Decor': '30-75 days before the event',
+  'Balloon Decor': '7-20 days before the celebration',
+  'Birthday Decor': '7-20 days before the celebration',
+  'Lighting Decor': '7-20 days before production',
+  'Stage Decor': '15-45 days before the function',
   'Venue Decor': '7-20 days before production'
 };
 
 export default function EventBrief() {
-  const [eventType, setEventType] = useState<(typeof eventTypes)[number]>('Wedding');
+  const [eventType, setEventType] = useState<(typeof eventTypes)[number]>('Wedding Decor');
   const [mood, setMood] = useState<(typeof styleMoods)[number]>('Royal');
   const [guests, setGuests] = useState(250);
   const [selectedPriorities, setSelectedPriorities] = useState<string[]>([
@@ -43,10 +44,10 @@ export default function EventBrief() {
 
     const team =
       guests >= 500
-        ? 'Lead planner, decor crew, vendor coordinator, hospitality desk, and floor manager'
+        ? 'Decor lead, production crew, lighting support, vendor coordinator, and floor manager'
         : guests >= 180
-          ? 'Planner, decor crew, vendor coordinator, and event-day supervisor'
-          : 'Planner, decor team, and day-of support';
+          ? 'Decor lead, setup crew, vendor coordinator, and event-day supervisor'
+          : 'Decor team and day-of setup support';
 
     const focus =
       selectedPriorities.length > 0
@@ -70,7 +71,7 @@ export default function EventBrief() {
   };
 
   const whatsappMessage = [
-    'New event brief for Annai Eventz Attur',
+    `New event brief for ${clientProfile.name}`,
     `Event type: ${eventType}`,
     `Guest count: ${guests}`,
     `Preferred style: ${mood}`,
@@ -79,7 +80,7 @@ export default function EventBrief() {
     `Planning timeline: ${recommendation.timeline}`
   ].join('\n');
 
-  const whatsappLink = `https://wa.me/919994826482?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappLink = `${clientProfile.whatsappUrl}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <section id="planner" className="bg-premium-soft px-5 py-16 sm:px-8 sm:py-24 lg:px-10 lg:py-28">
@@ -93,11 +94,11 @@ export default function EventBrief() {
         >
           <p className="text-xs font-bold uppercase tracking-[0.34em] text-gold">Event Brief Builder</p>
           <h2 className="mt-4 font-serif text-4xl leading-tight text-navy sm:text-5xl">
-            Build a quick planning brief before you call.
+            Build a quick decor brief before you enquire.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-charcoal/68 sm:text-base">
-            A short interactive planner gives the team better context and helps clients understand
-            the level of support their event may need.
+            A short interactive planner helps clients estimate the kind of decor support their
+            function may need before contacting {clientProfile.shortName}.
           </p>
         </motion.div>
 

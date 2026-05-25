@@ -1,68 +1,70 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { clientImages, clientProfile } from '@/lib/client';
 
 const testimonials = [
   {
     quote:
       'The stage decor and event coordination were handled neatly, and the function felt smooth from start to finish.',
     name: 'Wedding Client',
-    event: 'Wedding Function',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300'
+    event: 'Wedding Function'
   },
   {
     quote:
-      'Annai Eventz Attur helped us organize a formal program with clear planning, stage setup, and guest flow.',
-    name: 'Corporate Client',
-    event: 'Conference Event',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300'
+      'Grand Celebration helped us organize a formal program with clear planning, stage setup, and guest flow.',
+    name: 'Event Client',
+    event: 'Stage Decor'
   },
   {
     quote:
       'The anniversary setup looked elegant and the team managed the decor details without stress for our family.',
     name: 'Family Client',
-    event: 'Anniversary Party',
-    avatar: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?w=300'
+    event: 'Anniversary Party'
   },
   {
     quote:
       'The birthday decor was bright, organized, and photo-friendly. The setup was ready on time.',
     name: 'Birthday Client',
-    event: 'Milestone Birthday',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300'
+    event: 'Milestone Birthday'
   },
   {
     quote:
       'Good support for decor, seating, and overall arrangements. The team understood what we needed for the function.',
     name: 'Local Client',
-    event: 'Family Celebration',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300'
+    event: 'Family Celebration'
   }
 ];
 
 export default function Testimonials() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isInView = useInView(sectionRef, { amount: 0.15 });
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const active = testimonials[activeIndex];
 
   useEffect(() => {
-    if (isPaused) return;
+    if (!isInView || isPaused) return;
 
     const timer = window.setInterval(() => {
       setActiveIndex((index) => (index + 1) % testimonials.length);
     }, 5000);
 
     return () => window.clearInterval(timer);
-  }, [isPaused]);
+  }, [isInView, isPaused]);
 
   const previous = () => setActiveIndex((index) => (index - 1 + testimonials.length) % testimonials.length);
   const next = () => setActiveIndex((index) => (index + 1) % testimonials.length);
 
   return (
-    <section id="testimonials" className="scroll-mt-20 bg-ivory px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
+    <section
+      ref={sectionRef}
+      id="testimonials"
+      className="scroll-mt-20 bg-ivory px-5 py-20 sm:px-8 lg:px-10 lg:py-28"
+    >
       <div className="mx-auto max-w-7xl">
         <motion.div
           className="mx-auto max-w-3xl text-center"
@@ -76,7 +78,7 @@ export default function Testimonials() {
             What Our Clients Say
           </h2>
           <p className="mx-auto mt-4 max-w-xl leading-7 text-charcoal/65">
-            Feedback-style highlights for event decor, coordination, timing, and guest-friendly
+            Feedback-style highlights for event decor, lighting, timing, and guest-friendly
             arrangements.
           </p>
         </motion.div>
@@ -104,22 +106,20 @@ export default function Testimonials() {
               >
                 <div className="relative min-h-[190px] overflow-hidden rounded-sm border border-white/10 bg-white/5 sm:min-h-[240px] md:min-h-[360px]">
                   <Image
-                    src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200"
-                    alt="Luxury reception dining room"
+                    src={clientImages.floralCircles}
+                    alt={`${clientProfile.name} decorated reception stage`}
                     fill
                     sizes="(min-width: 768px) 34vw, 100vw"
-                    className="object-cover"
+                    className="object-cover object-center"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-obsidian/86 via-plum/25 to-transparent" />
                   <div className="absolute bottom-4 left-4 flex items-center gap-3 sm:bottom-5 sm:left-5">
-                    <div className="h-14 w-14 overflow-hidden rounded-full border-2 border-gold sm:h-16 sm:w-16">
-                      <Image
-                        src={active.avatar}
-                        alt={`${active.name} avatar`}
-                        width={96}
-                        height={96}
-                        className="h-full w-full object-cover"
-                      />
+                    <div className="grid h-14 w-14 place-items-center rounded-full border-2 border-gold bg-gold text-lg font-bold text-navy sm:h-16 sm:w-16">
+                      {active.name
+                        .split(' ')
+                        .map((part) => part[0])
+                        .join('')
+                        .slice(0, 2)}
                     </div>
                     <div>
                       <p className="font-semibold text-white">{active.name}</p>

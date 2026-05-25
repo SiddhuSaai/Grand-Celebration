@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -17,18 +17,8 @@ const navLinks = [
   { label: 'Contact', href: '/#contact' }
 ];
 
-type NavbarProps = {
-  solid?: boolean;
-};
-
-export default function Navbar({ solid = false }: NavbarProps) {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    setIsScrolled(latest > 24);
-  });
 
   const closeMenu = () => setIsOpen(false);
   const openEnquiryPopup = () => {
@@ -38,11 +28,7 @@ export default function Navbar({ solid = false }: NavbarProps) {
 
   return (
     <motion.header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        solid || isScrolled || isOpen
-          ? 'border-b border-gold/15 bg-obsidian/97 shadow-xl shadow-black/10'
-          : 'bg-transparent'
-      }`}
+      className="fixed inset-x-0 top-0 z-50 border-b border-gold/15 bg-obsidian shadow-xl shadow-black/10 transition-all duration-500"
       initial={false}
       animate={{ y: 0 }}
       transition={{ duration: 0.7, ease: 'easeOut' }}
@@ -91,7 +77,7 @@ export default function Navbar({ solid = false }: NavbarProps) {
       <AnimatePresence>
         {isOpen ? (
           <motion.div
-            className="border-t border-gold/15 bg-obsidian/97 px-5 pb-6 pt-2 shadow-2xl shadow-black/20 lg:hidden"
+            className="border-t border-gold/15 bg-obsidian px-5 pb-6 pt-2 shadow-2xl shadow-black/20 lg:hidden"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}

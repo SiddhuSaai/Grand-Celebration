@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <Navbar solid />
+      <Navbar />
       <main className="pt-20">
         <About />
         <ContactForm />

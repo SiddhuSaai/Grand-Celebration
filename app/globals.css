@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  background: #fffdf8;
+  color: #272330;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #cfa85b;
+  color: #090c16;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090c16;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cfa85b;
+  border-radius: 999px;
+}
+
+* {
+  scrollbar-color: #cfa85b #090c16;
+  scrollbar-width: thin;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+:focus-visible {
+  outline: 2px solid #cfa85b;
+  outline-offset: 4px;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.glass-input {
+  border-color: rgba(244, 216, 154, 0.26);
+  background: rgba(255, 255, 255, 0.055);
+  color: #fff8ec;
+}
+
+.glass-input::placeholder {
+  color: rgba(255, 248, 236, 0.44);
+}
+
+.glass-input option {
+  color: #090c16;
+}
+
+.glass-input:focus {
+  border-color: #cfa85b;
+  background: rgba(255, 255, 255, 0.08);
+}
